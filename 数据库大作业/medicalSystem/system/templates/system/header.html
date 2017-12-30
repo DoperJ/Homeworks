@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!-- Template by Quackit.com -->
+<html lang="en">
+
+{% include 'system/includes/homeHead.html' %}
+
+<body>
+
+    <!-- Navigation -->
+    {% include 'system/includes/nav_bar.html' %}
+
+	<div class="container-fluid">
+		<div class="col-sm-3">
+			<!-- Text Panel -->
+			<div class="panel panel-default">
+				<!-- Notices -->
+					<div class="panel-heading">
+						<h1 class="panel-title"><span class="glyphicon glyphicon-bullhorn"></span>Notices</h1>
+					</div>
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">Head</th>
+								<th scope="col">Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for post in notice_list %}
+								<tr>
+									<td><a href="/home/{{post.id}}"> {{ post.title }}</a></td>
+									<td>{{ post.date|date:"Y-m-d" }}</td>
+								</tr>
+							{% endfor %}
+					    </tbody>
+				    </table>
+				    {% block notice_detail %}
+			    	{% endblock %}
+			</div>
+			{% include 'system/includes/advertisements.html' %}
+		</div>
+		<div class="col-sm-6">
+			{% include 'system/includes/center_panel.html' %}
+		</div>
+		<div class="col-sm-3">
+			{% include 'system/includes/right_panel.html' %}
+		</div>
+	</div>
+
+	<!-- footer -->
+	{% include 'system/includes/footer.html' %}
+	
+</body>
+
+</html>

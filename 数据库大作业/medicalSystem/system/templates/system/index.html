@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!-- Template by Quackit.com -->
+<html lang="en">
+
+{% include 'system/includes/homeHead.html' %}
+
+<body>
+
+    <!-- Navigation -->
+    {% include 'system/includes/nav_bar.html' %}
+
+	<div class="container-fluid">
+		<div class="col-sm-3">
+			<!-- Diagnosis Infomation -->
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span class="glyphicon glyphicon-pencil"></span> 
+						Diagnosis Record
+					</h3>
+				</div>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th scope="col">Symptom</th>
+							<th scope="col">Diagnosis Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for diagnosis in diagnosis_list %}
+					        <tr>
+					        	<td>{{ diagnosis.syptom }}</td>
+					        	<td>{{ diagnosis.diagnosis_date }}</td>
+					        </tr>
+					    {% endfor %}
+				    </tbody>
+		    	</table>
+			</div>
+
+			<!-- Book Info -->
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h1 class="panel-title"><span class="glyphicon glyphicon-earphone"></span>Your Registry</h1>
+				</div>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th scope="col">Department</th>
+							<th scope="col">Registry Time</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for booking_form in booking_list %}
+					        <tr>
+					        	<td>{{booking_form.department.name}}</td>
+					        	<td>
+					        		{{booking_form.booking_time}}
+					        	</td>
+					        </tr>
+					    {% endfor %}
+				    </tbody>
+		    	</table>
+			</div>
+
+			<!-- Book Form -->
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<span class="glyphicon glyphicon-plus"></span> 
+						Register a Department
+					</h3>
+				</div>
+				<form action="/index" method="post">
+					{% csrf_token %}		
+					{% if user.profile.medical_record %}
+					<br>
+					<div class="form-group row">
+						<label for="Department" class="col-sm-4 col-sm-offset-1 col-form-label"><h4>Department</h4></label>
+						<div class="col-sm-6">
+					    	<select class="form-control form-control-md" name="Department" id="Department" value={{user.profile.gender}}>
+								{% for department in department_list %}
+									<option value="{{ department.name }}">{{ department.name }}</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+
+					
+					<div class="row">
+						<div class="col-sm-8 col-sm-offset-2">
+							<button type="submit" class="btn btn-success btn-sm btn-block">Save</button>
+						</div>
+					</div>						
+				   	
+				   	{% else %}
+			    		<div class="row">
+						<div class="col-sm-10 col-sm-offset-1">
+							<h3 style="color:purple">You have no medical record book yet.</h3>
+						</div>
+					</div>
+				    	<div class="row">
+							<div class="col-sm-4 col-sm-offset-1">
+								<a class="btn btn-success btn-sm" href="book" style="color:white">Get One</a>
+							</div>
+						</div>
+			    	{% endif %}
+				</form>
+				<br>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			{% include 'system/includes/center_panel.html' %}
+		</div>
+		<div class="col-sm-3">
+			{% include 'system/includes/right_panel.html' %}
+		</div>
+	</div>
+
+	<!-- footer -->
+	{% include 'system/includes/footer.html' %}
+	
+</body>
+
+</html>

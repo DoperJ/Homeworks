@@ -1,0 +1,181 @@
+{% if request.user.is_authenticated %}
+<!-- Form --> 
+<div class="panel panel-default">				
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<span class="glyphicon glyphicon-user"></span> 
+			Logged In
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div class="form-group">Welcome, {{ user.profile.name }} <a href="{% url 'logout' %}"><input class="btn btn-default" type="submit" value="Logout" /></a></div>
+	</div>
+</div>
+{% else %}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<span class="glyphicon glyphicon-log-in"></span> 
+			Log In
+		</h3>
+	</div>
+	<div class="panel-body">	
+		Click here to get more services
+		<span class="glyphicon glyphicon-arrow-right"></span>
+		<a class="btn btn-success btn-sm" href="{% url 'login' %}" style="color:white">Log In</a>			
+	</div>
+</div>
+{% endif %}
+
+<!-- Progress Bars -->
+<div class="panel panel-default">
+	{% if request.user.is_authenticated %}
+		{% if edit %}
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<span class="glyphicon glyphicon-tasks"></span> 
+					Personal Profile
+				</h3>
+			</div>
+			<form action="/profile" method="post">
+				{% csrf_token %}
+				<br>
+				<div class="form-group row">
+					<label for="name" class="col-sm-4 col-form-label"><h4>&nbsp Name</h4></label>
+					<div class="col-sm-8">
+			    		{% if user.profile.name %}
+							<input type="text"
+				    		class="form-control"
+				    		id="name"
+				    		name="name"
+				    		value="{{ user.profile.name }}">
+						{% else %}
+							<input type="text"
+				    		class="form-control"
+				    		id="name"
+				    		name="name"
+				    		value="No name">
+						{% endif %}
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="gender" class="col-sm-4 col-form-label"><h4>&nbsp Gender</h4></label>
+					<div class="col-sm-8">
+				    	<select class="form-control form-control-md" name="gender" id="gender" value={{user.profile.gender}}>
+				    		{% if user.profile.gender == "M" %}
+								<option value="M" selected>Male</option>
+								<option value="F">Female</option>
+							
+				    		{% elif user.profile.gender == "F" %}
+								<option value="M">Male</option>
+								<option value="F" selected>Female</option>
+							{% else %}
+								<option value="F">-----------</option>
+								<option value="M">Male</option>
+								<option value="F" selected>Female</option>
+							{% endif %}
+						</select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="birthdate" class="col-sm-4 col-form-label"><h4>&nbsp Birthdate</h4></label>
+					<div class="col-sm-8">
+						{% if user.profile.birthdate %}
+				    	<input type="text"
+				    		class="form-control"
+				    		id="birthdate"
+				    		name="birthdate"
+				    		value="{{ user.profile.birthdate.year}}-{{user.profile.birthdate.month}}-{{user.profile.birthdate.day }}" required>
+				    	{% else %}
+				    	<input type="date"
+				    		class="form-control"
+				    		id="birthdate"
+				    		name="birthdate"
+				    		placeholder="xxxx-xx-xx"
+				    		value="1970-1-1" required>
+				    	{% endif %}
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="socialID" class="col-sm-5 col-form-label"><h4>&nbsp Social ID</h4></label>
+					<div class="col-sm-7">
+				    	<input type="text" 
+				    		class="form-control"
+				    		id="socialID"
+				    		name="socialID"
+				    		placeholder="{{ user.profile.socialID }}"
+				    		value="0000" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="phone_number" class="col-sm-6 col-form-label"><h4>&nbsp Phone Number</h4></label>
+					<div class="col-sm-6">
+						{% if user.profile.phone_number%}
+				    	<input type="text" 
+				    			class="form-control" 
+				    			id="phone_number" 
+				    			name="phone_number" 
+				    			placeholder="{{ user.profile.phone_number }}" 
+				    			value={{ user.profile.phone_number }} required>
+				    	{% else %}
+				    	<input type="text" 
+				    			class="form-control" 
+				    			id="phone_number" 
+				    			name="phone_number" 
+				    			placeholder="{{ user.profile.phone_number }}" 
+				    			value="0000" required>
+				    	{% endif %}
+					</div>
+				</div>
+					 <!-- {{ profile_form.as_p}} -->
+				<div class="row">
+					<div class="col-sm-5 col-sm-offset-1">
+						<button type="submit" class="btn btn-success btn-sm btn-block">Save</button>
+					</div>
+					<div class="col-sm-5 ">
+						<a type="button" class="btn btn-danger btn-sm btn-block" href="index">Cancel</a>
+					</div>
+				</div>				
+				<br>
+			</form>
+		{% else %}
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				<span class="glyphicon glyphicon-tasks"></span> 
+				Personal Profile <a class="btn btn-info btn-sm" href="profile" style="color:white">Edit</a>
+			</h3>
+		</div>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">Label</th>
+					<th scope="col">Info</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+		        	<td>Name</td>
+		        	<td>{{user.profile.name}}</td>
+		        </tr>
+		        <tr>
+		        	<td>GENDER</td>
+		        	<td>{{user.profile.get_gender_display}}</td>
+		        </tr>
+		        <tr>
+		        	<td>BIRTHDATE</td>
+		        	<td>{{user.profile.birthdate}}</td>
+		        </tr>
+		        <tr>
+		        	<td>SOCIAL ID</td>
+		        	<td>{{user.profile.socialID}}</td>
+		        </tr>
+		        <tr>
+		        	<td>PHONE NUMBER</td>
+		        	<td>{{user.profile.phone_number}}</td>
+		        </tr>
+		    </tbody>
+	    </table>
+		{% endif %}
+	{% else %}
+	{% endif %}
+</div>

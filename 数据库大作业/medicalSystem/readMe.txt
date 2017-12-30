@@ -1,0 +1,3 @@
+使用基于python的Web框架Django和MySql实现的数据库大作业医务管理系统
+由于时间原因实现的功能较少
+界面美化使用的是Bootstrap3
