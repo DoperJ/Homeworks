@@ -1,0 +1,4 @@
+实验一使用基于C++的openmp计算前缀和；
+实验二使用基于python的MPI计算前缀和；
+实验三floyd.py使用基于python的MPI计算有向图最短路径，使用的是并行弗洛伊德算法；
+	getPi.py使用python的多进程库multiprocessing并行计算圆周率。
