@@ -82,7 +82,7 @@ DATABASES = {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'MedicalSystem',
             'USER': 'root',
-            'PASSWORD': '***',
+            'PASSWORD': '515300',
             'HOST': '',
             'PORT': '',
     }
