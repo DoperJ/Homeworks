@@ -1,0 +1,50 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+entity traffic_light_dianke_34 is
+	port(clk, rst: in std_logic;
+			red, green, yellow: out std_logic);
+end entity;
+
+architecture behav of traffic_light_dianke_34 is
+	signal counter:integer range 0 TO 9;
+begin
+	process(clk,rst)
+	type state_type IS(R,G,Y);
+	variable state:state_type;
+	begin
+		if rst='1' then state:=R;
+			red<='1';
+			green<='0';
+			yellow<='0';
+			counter<=9;
+		elsif clk'event and clk='1' then
+			case state is
+			when R=>red<='1';
+				green<='0';
+				yellow<='0';
+				counter<=counter-1;
+				if(counter=1) then state:=G;
+					counter<=6;
+				else state:=R;
+				end if;
+			when G=>green<='1';
+				red<='0';
+				yellow<='0';
+				counter<=counter-1;
+				if (counter=1) then state:=Y; 
+					counter<=3;
+				else state:=G;
+				end if;
+			when Y=>yellow<='1';
+				green<='0'; 
+				red<='0';
+				counter<=counter-1;
+				if (counter=1) then state:=R; 
+					counter<=9;
+				else state:=Y;
+				end if;
+			end case;
+		end if;
+	end process;
+end behav;

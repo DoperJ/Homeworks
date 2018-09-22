@@ -1,0 +1,113 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+
+entity key_light is
+	port(clk: in std_logic;
+			rst: in std_logic;
+			key: in std_logic;
+			led: out std_logic_vector(3 downto 0));
+end entity;
+
+architecture behav of key_light is
+begin
+	process (clk, rst, key)
+		type state_type is(S0, S1, S2, S3, S4);
+		variable present_state: state_type;
+		variable key_available: std_logic;
+		variable turn_on : integer range 1 downto 0;
+		variable cnt: integer range 10 downto 0;
+		variable key_rst: std_logic;
+		variable key_rst_an: std_logic;
+		variable key_rst_r: std_logic;
+		variable low_sw: std_logic;
+		variable low_sw_an: std_logic;
+		variable low_sw_r: std_logic;
+		begin
+			if rst='1' then
+				present_state:=S0;
+				key_available := '0';
+				led <= "1111";
+				turn_on := 0;
+				key_rst_r := '0';
+				cnt := 0;
+			elsif rising_edge(clk) then
+				key_rst := key;
+				key_rst_an := (key_rst and key_rst_r);
+				if key_rst_an = '1' then
+					cnt := cnt + 1;
+				else
+					cnt := 0;
+				end if;
+				key_rst_r := key_rst;
+				if cnt = 3 then
+					key_available := '1';
+					cnt := 2;
+				else
+					key_available := '0';
+				end if;
+				case present_state is
+					when S0 =>
+						led <= "1111";
+						if (key_available = '1') then
+							if (turn_on = 1) then
+								present_state := S0;
+							else
+								present_state := S1;
+							end if;
+							turn_on := 1;
+						else
+							turn_on := 0;
+						end if;
+					when S1 =>				
+						led <= "0111";
+						if (key_available = '1') then
+							if (turn_on = 1) then
+								present_state := S1;
+							else
+								present_state := S2;
+							end if;
+							turn_on := 1;
+						else
+							turn_on := 0;
+						end if;
+					when S2 =>
+						led <= "1011";
+						if (key_available = '1') then
+							if (turn_on = 1) then
+								present_state := S2;
+							else
+								present_state := S3;
+							end if;
+							turn_on := 1;
+						else
+							turn_on := 0;
+						end if;
+					when S3 =>
+						led <= "1101";
+						if (key_available = '1') then
+							if (turn_on = 1) then
+								present_state := S3;
+							else
+								present_state := S4;
+							end if;
+							turn_on := 1;
+						else
+							turn_on := 0;
+						end if;
+					when S4 =>
+						led <= "1110";
+						if (key_available = '1') then
+							if (turn_on = 1) then
+								present_state := S4;
+							else
+								present_state := S1;
+							end if;
+							turn_on := 1;
+						else
+							turn_on := 0;
+						end if;								
+				end case;
+			end if;
+		end process;
+end behav;

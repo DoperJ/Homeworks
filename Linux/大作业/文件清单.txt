@@ -1,0 +1,20 @@
+源程序目录结构如下。
+├── pom.xml
+└── src
+    ├── main
+    │   └── java
+    │       └── com
+    │           ├── HttpServer.java
+    │           ├── decoder
+    │           │   └── json
+    │           │       └── HttpJsonDecoder.java
+    │           └── handlers
+    │               └── HttpServerhandler.java
+    └── test
+        └── java
+            └── com
+                └── HttpClient.java
+
+ pom.xml是maven项目配置文件。
+ src目录下包含两个目录main和test，分别存放HttpServer和HttpClient源程序。
+ 与HttpServera源程序同一包下还有两个包decoder和handlers，分别存放解码器和处理类的源程序。

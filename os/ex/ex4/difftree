@@ -1,0 +1,43 @@
+#!/bin/bash
+dir_a=$1
+dir_b=$2
+current_dir=$(pwd)
+
+function diffTree() { #使用递归函数来实现对子目录的比较
+	u=$(ls $1)
+	v=$(ls $2)
+	head=$3 #使子目录的显示不同与父目录从而能够打印出树形结构
+	content=$(diff -su "$1" "$2")
+	line_counter=0
+	while read line
+	do
+		if (echo $line|grep -qe '^Common');then
+			continue
+		fi
+		if (echo $line|grep -qe '^Only');then
+			echo "$head|....$line"
+		fi
+		if ((echo $line|grep -qe '^diff') || (echo $line|grep -qe'Files'));then
+			echo "$head|--- $line"
+		else
+			echo -e "$head|    $line"
+		fi
+	done<<<"$content"
+	
+	for i in $u
+	do
+		for j in $v
+		do
+			if [ "$i" = "$j" ];then
+				if test -d "$1/$i";then
+					if test -d "$2/$j";then
+						echo "$head|--- diff $1/$i and $2/$j"
+						diffTree "$1/$i" "$2/$j" "|   $head"
+					fi
+				fi
+			fi
+		done
+	done
+}
+pwd
+diffTree $dir_a $dir_b
