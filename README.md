@@ -1,1 +1,3 @@
-将大学期间的平时实验、大作业以及课程设计放到 Github 上面来，算是表达对开源的支持
+# Homework in SCUT
+- Most of them are from my minor major **CS**.
+- Most of them are **junk codes**.
